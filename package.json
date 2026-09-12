@@ -1,0 +1,26 @@
+{
+	"name": "twoslash-luau",
+	"version": "0.1.0",
+	"description": "Twoslash-style annotation pipeline for Luau: type-checks ```luau twoslash``` code blocks against luau-lsp and decorates the rendered HTML with hover types, `-- ^?` query results, and diagnostics.",
+	"type": "module",
+	"license": "MIT",
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"scripts": {
+		"setup-luau-lsp": "node src/setup-luau-lsp.mjs",
+		"typecheck": "tsc --noEmit"
+	},
+	"peerDependencies": {
+		"hast": "*",
+		"server-only": "*",
+		"shiki": "^1.0.0 || ^2.0.0 || ^3.0.0 || ^4.0.0",
+		"unist-util-visit": "^5.0.0",
+		"vscode-jsonrpc": "^8.0.0"
+	},
+	"devDependencies": {
+		"@types/hast": "^3.0.4",
+		"@types/node": "^24.0.0",
+		"typescript": "^5.6.0"
+	}
+}
