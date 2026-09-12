@@ -1,6 +1,6 @@
 # twoslash-luau
 
-Twoslash-style annotation pipeline for Luau (Linear [TAS-162](https://linear.app/philosolog/issue/TAS-162)). Type-checks ` ```luau twoslash ` code blocks against a real `luau-lsp` process and decorates the rendered HTML with hover types, `-- ^?` query results, and diagnostics — so documentation examples show compiler-derived type info instead of hand-maintained comments.
+Twoslash-style annotation pipeline for Luau. Type-checks ` ```luau twoslash ` code blocks against a real `luau-lsp` process and decorates the rendered HTML with hover types, `-- ^?` query results, and diagnostics — so documentation examples show compiler-derived type info instead of hand-maintained comments.
 
 ## How it works
 
