@@ -66,13 +66,13 @@ export function rehypeLuauTwoslashExtract() {
 			if (node.tagName !== "pre") return;
 			const code = node.children.find((child) =>
 				isElement(child, "code"),
-			) as Element | undefined;
+			);
 			if (!code) return;
 			if (!classList(code).includes("language-luau")) return;
 
-			const meta = String(
-				(code.data as { meta?: unknown } | undefined)?.meta ?? "",
-			);
+			const data: { meta?: unknown } | undefined = code.data;
+			const rawMeta = data?.meta;
+			const meta = typeof rawMeta === "string" ? rawMeta : "";
 			if (!/\btwoslash\b/.test(meta)) return;
 
 			const textNode = code.children.find(
@@ -288,12 +288,8 @@ export function rehypeLuauTwoslashRender() {
 			figure.properties = figure.properties ?? {};
 			figure.properties.className = [...classList(figure), "has-twoslash"];
 
-			const pre = figure.children.find((c) => isElement(c, "pre")) as
-				| Element
-				| undefined;
-			const code = pre?.children.find((c) => isElement(c, "code")) as
-				| Element
-				| undefined;
+			const pre = figure.children.find((c) => isElement(c, "pre"));
+			const code = pre?.children.find((c) => isElement(c, "code"));
 			if (!code) return;
 
 			const lineEls = code.children.filter((c): c is Element =>
