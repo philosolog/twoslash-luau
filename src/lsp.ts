@@ -67,8 +67,8 @@ class LuauLsp {
 			process.once("exit", () => proc.kill());
 
 			const connection = rpc.createMessageConnection(
-				new rpc.StreamMessageReader(proc.stdout!),
-				new rpc.StreamMessageWriter(proc.stdin!),
+				new rpc.StreamMessageReader(proc.stdout),
+				new rpc.StreamMessageWriter(proc.stdin),
 			);
 			connection.listen();
 
@@ -83,7 +83,7 @@ class LuauLsp {
 				},
 				trace: "off",
 			});
-			connection.sendNotification("initialized", {});
+			await connection.sendNotification("initialized", {});
 			this.connection = connection;
 		})();
 
@@ -105,7 +105,7 @@ class LuauLsp {
 			.toString(36)
 			.slice(2)}.luau`;
 
-		connection.sendNotification("textDocument/didOpen", {
+		await connection.sendNotification("textDocument/didOpen", {
 			textDocument: {
 				uri,
 				languageId: "luau",
@@ -133,16 +133,18 @@ class LuauLsp {
 					})
 					.then(
 						(result) =>
-							((result as { items?: LspDiagnostic[] }).items ??
-								[]) as LspDiagnostic[],
+							(result as { items?: LspDiagnostic[] }).items ?? [],
 					)
 					.catch(() => [] as LspDiagnostic[]),
 			]);
 			return { hovers, diagnostics: diag };
 		} finally {
-			connection.sendNotification("textDocument/didClose", {
-				textDocument: { uri },
-			});
+			// Best-effort cleanup; a dead server must not mask the real error.
+			connection
+				.sendNotification("textDocument/didClose", {
+					textDocument: { uri },
+				})
+				.catch(() => {});
 		}
 	}
 
