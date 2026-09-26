@@ -3,7 +3,7 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 
-const ROOT_DIR = path.resolve(process.cwd());
+const ROOT_DIR = path.resolve(/*turbopackIgnore: true*/ process.cwd());
 const INSTALL_DIR = path.join(ROOT_DIR, ".luau-lsp");
 
 export const LUAU_LSP_BINARY_PATH = path.join(
